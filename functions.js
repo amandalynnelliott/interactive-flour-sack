@@ -8,6 +8,7 @@ depressed, belly tickle, eye poke, drag up, drag right or left (?), falling, exc
 ? Place img holder (only one image div with src that changes) in <canvas> drawImage and getImageData to not allow clicks on alpha 0 pixels
 
 EVENTS - FOR EACH, CHANGE IMG & ANIM NAME
+--- can't click on transparent pixel
 --- click event - belly location
 --- click event - eye location
 --- click and drag - draggable: true, or .ondrag - define ground area, dx, dy, weight
@@ -27,7 +28,9 @@ Animate and exchange placeholder images for GIFs, making sure that connection fr
 
 */
 
-
+// 1. TEST: Get a GIF to play in the canvas
+// 2. Get bird GIF to move around, accept user input 
+// 3. Depending on the user input, click or drag, change GIF.
 
 
 var states = [tickle, pokeRight, pokeLeft, dragUp, fall];
