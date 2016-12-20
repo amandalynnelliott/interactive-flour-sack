@@ -1,0 +1,21 @@
+ #container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+} 
+
+#sack {
+	position: relative;
+	margin: auto;
+	margin-top: 420px;
+	width: 150px;
+	height: 230px;
+	border-radius: 25px;
+	background-color: #e0b78f;
+	box-shadow: 0px 2px 14px 0px rgba(95, 86, 99, 0.58);
+	/* for pngs, filter: drop-shadow 0,0,0,0 (0,0,0,0); */
+}
+
+#sack:hover {
+	background-color: #f1997d;
+}
