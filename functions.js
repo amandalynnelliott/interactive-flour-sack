@@ -10,7 +10,7 @@ depressed, belly tickle, eye poke, drag up, drag right or left (?), falling, exc
 EVENTS - FOR EACH, CHANGE IMG & ANIM NAME
 --- click event - belly location
 --- click event - eye location
---- click and drag - draggable: true, or .ondrag
+--- click and drag - draggable: true, or .ondrag - define ground area, dx, dy, weight
 ------ let go, fall
 --- ? hover - eyes follow mouse - UNIT CIRCLE
 
@@ -28,10 +28,21 @@ Animate and exchange placeholder images for GIFs, making sure that connection fr
 */
 
 
-// click belly
 
-// click eye
 
-// click and drag
+var states = [tickle, pokeRight, pokeLeft, dragUp, fall];
+function changeGIF(event, state) {
+	
+	// then once state GIF plays once, default to neutral GIF looped infinitely
+}
 
-// unclick, fall
+
+// click belly, rightEye, or leftEye
+	// heatmap certain location of img .onclick changeGIF();
+var locations = [belly, rightEye, leftEye];
+function click(location) {
+	
+}
+
+
+// click and drag up, unclick, fall.  
