@@ -68,3 +68,79 @@ draw() {
 }
 
 */
+
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+var flourSack = {
+    x: window.innerWidth / 2,
+    y: window.innerHeight / 2,
+    width: 100,
+    height: 200,
+    state: "idle",
+    leftEyeX: 25,
+    leftEyeY: 50,
+    leftEyeR: 25,
+    rightEyeX: 75,
+    rightEyeY: 50,
+    rightEyeR: 25,
+    bellyX: 50,
+    bellyY: 125,
+    bellyR: 50
+}
+var mouseHeld = false;
+document.addEventListener("mousedown", function (e) {
+    if (e.x > flourSack.x && e.x < flourSack.x + flourSack.width && e.y > flourSack.y && e.y < flourSack.y + flourSack.height) {
+        mouseHeld = true;
+        if (Math.pow(e.x - (flourSack.x + flourSack.leftEyeX), 2) + Math.pow(e.y - (flourSack.y + flourSack.leftEyeY), 2) < Math.pow(flourSack.leftEyeR, 2)) {
+            console.log("left eye clicked");
+        }
+        if (Math.pow(e.x - (flourSack.x + flourSack.rightEyeX), 2) + Math.pow(e.y - (flourSack.y + flourSack.rightEyeY), 2) < Math.pow(flourSack.rightEyeR, 2)) {
+            console.log("right eye clicked");
+        }
+        if (Math.pow(e.x - (flourSack.x + flourSack.bellyX), 2) + Math.pow(e.y - (flourSack.y + flourSack.bellyY), 2) < Math.pow(flourSack.bellyR, 2)) {
+            console.log("belly clicked");
+        }
+    }
+});
+document.addEventListener("mousemove", function (e) {
+    if (mouseHeld == true) {
+        flourSack.state = "flying";
+        flourSack.x = e.x;
+        flourSack.y = e.y;
+    }
+});
+document.addEventListener("mouseup", function (e) {
+    mouseHeld = false;
+    if (flourSack.state == "flying") {
+        flourSack.state = "falling";
+    }
+});
+
+function draw() {
+    if (flourSack.state == "falling") {
+        flourSack.y += 10;
+        if (flourSack.y >= window.innerHeight / 2) {
+            flourSack.state = "idle";
+        }
+    }
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#ff6432";
+    ctx.fillRect(flourSack.x, flourSack.y, flourSack.width, flourSack.height);
+    ctx.fillStyle = "#fff";
+    ctx.beginPath();
+    ctx.arc(flourSack.x + flourSack.leftEyeX, flourSack.y + flourSack.leftEyeY, flourSack.leftEyeR, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(flourSack.x + flourSack.rightEyeX, flourSack.y + flourSack.rightEyeY, flourSack.rightEyeR, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(flourSack.x + flourSack.bellyX, flourSack.y + flourSack.bellyY, flourSack.bellyR, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#000";
+    ctx.fillText(flourSack.state, flourSack.x, flourSack.y);
+    requestAnimationFrame(draw);
+}
+draw();

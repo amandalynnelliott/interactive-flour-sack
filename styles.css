@@ -1,8 +1,8 @@
- #container {
+ /*#container {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-} 
+} */
 
 /* #sack {
 	position: relative;
@@ -19,3 +19,7 @@
 	background-color: #f1997d;
 } */ 
 
+body, html {
+    margin: 0px;
+    overflow: hidden;
+}
