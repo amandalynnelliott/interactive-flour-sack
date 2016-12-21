@@ -23,7 +23,7 @@ BUTTONS, ALSO CHANGE IMG & ANIM NAME
 
 UI - "Click on the flour sack!"
 Background horizon line image/ scene
-Animate and exchange placeholder images for GIFs, making sure that connection frames are the same. 
+Smooth animation, each GIF ends back to idle and user can't interact with it until it's done. Just make sure they all connect back to idle. Idle = hub, other states = spokes.
 --- might need to make some transition GIFs, ie: depressed to neutral
 
 */
