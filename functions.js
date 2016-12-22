@@ -77,6 +77,9 @@ var flourSack = {
     width: 100,
     height: 200,
     state: "idle",
+    stateTotal: 50,
+    stateCounter: 0,
+    stateLoop: true,
     leftEyeX: 25,
     leftEyeY: 50,
     leftEyeR: 25,
@@ -87,24 +90,60 @@ var flourSack = {
     bellyY: 125,
     bellyR: 50
 }
+
+function setState(name) {
+    flourSack.state = name;
+    flourSack.stateCounter = 0;
+    switch (flourSack.state) {
+        case "idle":
+            flourSack.stateTotal = 50;
+            flourSack.stateLoop = true;
+            break;
+        case "flying":
+            flourSack.stateTotal = 25;
+            flourSack.stateLoop = true;
+            break;
+        case "falling":
+            flourSack.stateTotal = 10;
+            flourSack.stateLoop = true;
+            break;
+        case "leftEye":
+            flourSack.stateTotal = 75;
+            flourSack.stateLoop = false;
+            break;
+        case "rightEye":
+            flourSack.stateTotal = 75;
+            flourSack.stateLoop = false;
+            break;
+        case "belly":
+            flourSack.stateTotal = 75;
+            flourSack.stateLoop = false;
+            break;
+    }
+}
+
 var mouseHeld = false;
 document.addEventListener("mousedown", function (e) {
     if (e.x > flourSack.x && e.x < flourSack.x + flourSack.width && e.y > flourSack.y && e.y < flourSack.y + flourSack.height) {
-        mouseHeld = true;
-        if (Math.pow(e.x - (flourSack.x + flourSack.leftEyeX), 2) + Math.pow(e.y - (flourSack.y + flourSack.leftEyeY), 2) < Math.pow(flourSack.leftEyeR, 2)) {
-            console.log("left eye clicked");
-        }
-        if (Math.pow(e.x - (flourSack.x + flourSack.rightEyeX), 2) + Math.pow(e.y - (flourSack.y + flourSack.rightEyeY), 2) < Math.pow(flourSack.rightEyeR, 2)) {
-            console.log("right eye clicked");
-        }
-        if (Math.pow(e.x - (flourSack.x + flourSack.bellyX), 2) + Math.pow(e.y - (flourSack.y + flourSack.bellyY), 2) < Math.pow(flourSack.bellyR, 2)) {
-            console.log("belly clicked");
+        if (flourSack.state == "idle") {
+            mouseHeld = true;
+            if (Math.pow(e.x - (flourSack.x + flourSack.leftEyeX), 2) + Math.pow(e.y - (flourSack.y + flourSack.leftEyeY), 2) < Math.pow(flourSack.leftEyeR, 2)) {
+                setState("leftEye");
+            }
+            if (Math.pow(e.x - (flourSack.x + flourSack.rightEyeX), 2) + Math.pow(e.y - (flourSack.y + flourSack.rightEyeY), 2) < Math.pow(flourSack.rightEyeR, 2)) {
+                setState("rightEye");
+            }
+            if (Math.pow(e.x - (flourSack.x + flourSack.bellyX), 2) + Math.pow(e.y - (flourSack.y + flourSack.bellyY), 2) < Math.pow(flourSack.bellyR, 2)) {
+                setState("belly");
+            }
         }
     }
 });
 document.addEventListener("mousemove", function (e) {
     if (mouseHeld == true) {
-        flourSack.state = "flying";
+        if (flourSack.state != "flying") {
+            setState("flying");
+        }
         flourSack.x = e.x;
         flourSack.y = e.y;
     }
@@ -112,15 +151,27 @@ document.addEventListener("mousemove", function (e) {
 document.addEventListener("mouseup", function (e) {
     mouseHeld = false;
     if (flourSack.state == "flying") {
-        flourSack.state = "falling";
+        setState("falling");
     }
 });
 
+function update() {
+    flourSack.stateCounter++;
+    if (flourSack.stateCounter >= flourSack.stateTotal) {
+        flourSack.stateCounter = 0;
+        if (!flourSack.stateLoop) {
+            setState("idle");
+        }
+    }
+}
+setInterval(update, 41);
+
 function draw() {
     if (flourSack.state == "falling") {
-        flourSack.y += 10;
+        flourSack.y += 5;
         if (flourSack.y >= window.innerHeight / 2) {
-            flourSack.state = "idle";
+            flourSack.y = window.innerHeight / 2;
+            setState("idle");
         }
     }
 
@@ -140,7 +191,7 @@ function draw() {
     ctx.arc(flourSack.x + flourSack.bellyX, flourSack.y + flourSack.bellyY, flourSack.bellyR, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = "#000";
-    ctx.fillText(flourSack.state, flourSack.x, flourSack.y);
+    ctx.fillText(flourSack.state + " " + flourSack.stateCounter + "/" + flourSack.stateTotal, flourSack.x, flourSack.y);
     requestAnimationFrame(draw);
 }
 draw();
